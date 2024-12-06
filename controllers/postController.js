@@ -90,8 +90,25 @@ const update = (req, res) => {
 }
 
 
+function destroy(req, res) {
 
-const destroy = (req, res) => {
+    const sql = 'DELETE FROM posts WHERE id=?'
+
+    const { id } = req.params;
+
+    connection.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Fallimento nel cancellare il post' });
+
+        if (results.affectedRows === 0) return res.status(404).json({ error: `404! Nessun post trovato con id: ${id}` })
+
+        return res.json({ status: 204, affectedRows: results.affectedRows })
+
+    })
+}
+
+
+
+/*const destroy = (req, res) => {
     const post = posts.find(post => post.slug.toLowerCase() === req.params.slug)
 
 
@@ -111,7 +128,7 @@ const destroy = (req, res) => {
         data: newPosts
 
     })
-}
+}*/
 
 module.exports = {
     index,
