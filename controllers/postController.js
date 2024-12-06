@@ -2,7 +2,7 @@ const posts = require('../database/db.js')
 const fs = require('fs')
 const connection = require('../database/connection')
 
-const index = (req, res) => {
+/* const index = (req, res) => {
     // let markup = `
     //      res.json
     //         ${posts.map(post => `
@@ -19,9 +19,19 @@ const index = (req, res) => {
         data: posts,
         counter: posts.length
     })
-};
+};*/
 
 
+
+function index(req, res) {
+
+    const sql = 'SELECT * FROM posts';
+
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        res.json(results);
+    });
+}
 
 const show = (req, res) => {
 
